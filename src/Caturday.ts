@@ -2,12 +2,13 @@ import { Plugin } from "./interfaces/Plugin";
 import { GitClient } from "./interfaces/GitClient";
 import { NoteEvent } from "./interfaces/events/NoteEvent";
 import { Config } from "./interfaces/Config";
+import { GitProvider } from "./GitProvider";
 
 export default class Caturday implements Plugin<any, Promise<any>> {
   private client: GitClient;
 
   constructor(config: Config) {
-    this.client = require(config.git.client);
+    this.client = GitProvider.getInstance(config.git);
   }
 
   async handle(rx: NoteEvent): Promise<any> {
