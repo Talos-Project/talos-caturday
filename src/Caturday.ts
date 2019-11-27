@@ -1,22 +1,26 @@
-import { Plugin } from "./interfaces/Plugin"
+import { Plugin } from "./interfaces/Plugin";
 import { GitClient } from "./interfaces/GitClient";
 import { NoteEvent } from "./interfaces/events/NoteEvent";
+import { Config } from "./interfaces/Config";
 
-export class Caturday implements Plugin<any, Promise<any>> {
+export default class Caturday implements Plugin<any, Promise<any>> {
+  private client: GitClient;
 
-    private client: GitClient
+  constructor(config: Config) {
+    this.client = require(config.git.client);
+  }
 
-    constructor(client: GitClient) {
-        this.client = client
-    }
+  async handle(rx: NoteEvent): Promise<any> {
+    if (rx.object_kind !== "note") return Promise.resolve();
 
-    async handle(rx: NoteEvent): Promise<any> {
-        if (rx.object_kind !== "note")
-            return Promise.resolve()
-
-        if (rx.object_attributes.note && rx.object_attributes.note.includes("/meow"))
-            return this.client.MergeRequestNotes
-                .create(rx.project_id, rx.merge_request.iid, "![cat](https://cataas.com/cat)");
-    }
-
+    if (
+      rx.object_attributes.note &&
+      rx.object_attributes.note.includes("/meow")
+    )
+      return this.client.MergeRequestNotes.create(
+        rx.project_id,
+        rx.merge_request.iid,
+        "![cat](https://cataas.com/cat)"
+      );
+  }
 }

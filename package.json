@@ -1,6 +1,6 @@
 {
   "name": "talos-caturday",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A plugin for Talos",
   "main": "./dist/Caturday.js",
   "scripts": {
@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/aspartame21/caturday#readme",
   "dependencies": {
+    "@types/node": "^12.12.14",
     "tsc": "^1.20150623.0"
   }
 }
